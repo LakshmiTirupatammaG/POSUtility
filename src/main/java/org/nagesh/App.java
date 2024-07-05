@@ -3,7 +3,7 @@ package org.nagesh;
 import static org.nagesh.login.getinput;
 
 /**
- * Hello worldd!
+ * Hello world!
  *
  */
 public class App 
