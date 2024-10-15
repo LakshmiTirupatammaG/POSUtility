@@ -52,10 +52,10 @@ public class rds_test extends rds_ops {
 
 
     public static void setup(){
-        ChromeOptions options=new ChromeOptions();
-        options.addArguments("--headless=new");
-
-        driver = new ChromeDriver(options);
+        //ChromeOptions options=new ChromeOptions();
+        //options.addArguments("--headless=new");
+        
+        driver = new ChromeDriver();
 
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
@@ -132,30 +132,19 @@ public class rds_test extends rds_ops {
         driver.findElement(starting_line).click();
         WebElement starting_line_feild = driver.findElement(starting_line);
         Actions action = new Actions(driver);
-        String q="select " + "  rtrans.rtl_loc_id," + "  rtrans.BUSINESS_DATE," + "  trans.END_DATETIME," +
-         "rtrans.WKSTN_ID," + "  rtrans.TRANS_SEQ," + "  prty.CUST_ID," + "  trans.OPERATOR_PARTY_ID," + "  lineitm.item_id," +
-         "lineitm.QUANTITY," + "  trans.TOTAL," + "  trans.SUBTOTAL,"  +
-         "tndr.TNDR_ID," + "  inv.INVOICE_TYPE," + "  inv.EXT_INVOICE_ID" + "  from rds_trl_rtrans_lineitm rtrans \n" +
-         "join rds_trl_rtrans rrtrans\n" +
-         "on (rrtrans.rtl_loc_id = rtrans.rtl_loc_id and rrtrans.trans_seq = rtrans.trans_seq and rrtrans.WKSTN_ID =rtrans.WKSTN_ID " +
-         "and rtrans.RTRANS_LINEITM_TYPCODE !='TAX' and rtrans.void_flag =0)\n" +
-         "join rds_trn_trans trans\n" +
-         "on (trans.rtl_loc_id = rtrans.rtl_loc_id and trans.WKSTN_ID=rtrans.WKSTN_ID and  trans.trans_seq =rtrans.trans_seq )\n" +
-         "left join rds_trl_sale_lineitm lineitm\n" +
-         "on (lineitm.RTRANS_LINEITM_SEQ =rtrans.rtrans_lineitm_seq and lineitm.rtl_loc_id = rtrans.rtl_loc_id and" +
-         "lineitm.WKSTN_ID = rtrans.WKSTN_ID and lineitm.trans_seq =rtrans.trans_seq\n" +
-         "and rtrans.RTRANS_LINEITM_TYPCODE !='TAX' )\n" +
-         "left join rds_ttr_tndr_lineitm tndr \n" +
-         "on (rtrans.rtrans_lineitm_seq = tndr.rtrans_lineitm_seq and rtrans.rtl_loc_id =tndr.rtl_loc_id " +
-         "and rtrans.WKSTN_ID =tndr.WKSTN_ID and  rtrans.trans_seq = tndr.trans_seq)\n" +
-         "join rds_crm_party prty \n" +
-         "on (rrtrans.CUST_PARTY_ID=prty.PARTY_ID)\n" +
-         "left join rds_civc_invoice inv \n" +
-         "on (inv.INVOICE_TRANS_SEQ = rtrans.TRANS_SEQ and inv.RTL_LOC_ID = rtrans.RTL_LOC_ID and inv.WKSTN_ID =rtrans.WKSTN_ID )\n" +
-         "where rtrans.business_date like'" + rds_ops.business_data + "' and rtrans.RTL_LOC_ID ='"+rds_ops.store_num1 +
-          "' and rtrans.WKSTN_ID='" + rds_ops.register_num+ "' order by rtrans.TRANS_SEQ desc";
+        System.out.println("hello");
+        action.moveToElement((starting_line_feild)).sendKeys(        "select " +                "  rtrans.rtl_loc_id," +                "  rtrans.WKSTN_ID," +                "  rtrans.BUSINESS_DATE," +                "  prty.CUST_ID," +                "  rtrans.CREATE_USER_ID," +                "  lineitm.item_id," +                "  lineitm.QUANTITY," +                "  trans.TOTAL," +                "  (trans.TOTAL - trans.TAXTOTAL) as SUBTOTAL," +                "  tndr.TNDR_ID," +                "   inv.INVOICE_TYPE," +                "  inv.EXT_INVOICE_ID," +                "  rtrans.TRANS_SEQ " +                "  from rds_trl_rtrans_lineitm rtrans " +                "    join rds_trl_rtrans rrtrans" +                "        on (rrtrans.rtl_loc_id = rtrans.rtl_loc_id and rrtrans.trans_seq = rtrans.trans_seq and rrtrans.WKSTN_ID =rtrans.WKSTN_ID and rtrans.RTRANS_LINEITM_TYPCODE !='TAX' and rtrans.void_flag =0)" +                "    join rds_trn_trans trans" +                "        on (trans.rtl_loc_id = rtrans.rtl_loc_id and trans.WKSTN_ID=rtrans.WKSTN_ID and  trans.trans_seq =rtrans.trans_seq )" +                "    left join rds_trl_sale_lineitm lineitm" +                "        on (lineitm.RTRANS_LINEITM_SEQ =rtrans.rtrans_lineitm_seq and lineitm.rtl_loc_id = rtrans.rtl_loc_id and lineitm.WKSTN_ID = rtrans.WKSTN_ID and lineitm.trans_seq =rtrans.trans_seq" +                "        and rtrans.RTRANS_LINEITM_TYPCODE !='TAX' )" +                "    left join rds_ttr_tndr_lineitm tndr " +                "        on (rtrans.rtrans_lineitm_seq = tndr.rtrans_lineitm_seq and rtrans.rtl_loc_id =tndr.rtl_loc_id and rtrans.WKSTN_ID =tndr.WKSTN_ID and  rtrans.trans_seq = tndr.trans_seq)" +                "    join rds_crm_party prty " +                "        on (rrtrans.CUST_PARTY_ID=prty.PARTY_ID)" +                "    left join rds_civc_invoice inv " +                "        on (inv.INVOICE_TRANS_SEQ = rtrans.TRANS_SEQ and inv.RTL_LOC_ID = rtrans.RTL_LOC_ID and inv.WKSTN_ID =rtrans.WKSTN_ID )\n" +                "where rtrans.BUSINESS_DATE like '" + rds_ops.business_data + "' and rtrans.WKSTN_ID= '" + rds_ops.store_num1 +"'\n" +                "and  rtrans.rtl_loc_id = '" + rds_ops.register_num +"' order by rtrans.TRANS_SEQ desc;").perform();
 
-        action.moveToElement(starting_line_feild).sendKeys(q).perform();
+
+
+
+
+
+
+
+
+
+
 
 
         System.out.println("Query written");
